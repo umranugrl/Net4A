@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 //Transient => Her adýmda (her talepte) yeni bir instance.
 
 builder.Services.AddSingleton<IProductService, ProductManager>();
+builder.Services.AddSingleton<ICategoryService, CategoryManager>();
 
 var app = builder.Build();
 

@@ -22,24 +22,33 @@ namespace Business.Concretes
             products.Add(product);
         }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Product> GetAll()
         {
             return this.products;
         }
 
-        public Product GetById(int id)
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Product product = products.FirstOrDefault(p => p.Id == id);
+            if (product != null)
+            {
+                products.Remove(product);
+            }
         }
 
-        public void Update(Product product)
+        public Product GetById(int id)
         {
-            throw new NotImplementedException();
+            return products.FirstOrDefault(p => p.Id == id);
+        }
+
+        public void Update(Product updatedProduct)
+        {
+            Product product = products.FirstOrDefault(p => p.Id == updatedProduct.Id);
+            if (product != null)
+            {
+                product.Name = updatedProduct.Name;
+                product.UnitPrice = updatedProduct.UnitPrice;
+            }
         }
     }
 }
