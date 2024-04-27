@@ -1,4 +1,5 @@
 ﻿using Business.Abstracts;
+using DataAccess.Abstracts;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -10,45 +11,62 @@ namespace Business.Concretes
 {
     public class ProductManager : IProductService
     {
-        List<Product> products;
+        IProductRepository _productRepository;
 
-        public ProductManager()
+        public ProductManager(IProductRepository productRepository)
         {
-            this.products = new List<Product>();
+            _productRepository = productRepository;
         }
 
         public void Add(Product product)
         {
-            products.Add(product);
-        }
-
-        public List<Product> GetAll()
-        {
-            return this.products;
+            if(product.UnitPrice <0)
+                throw new Exception("Ürün fiyatı 0'dan küçük olamaz.");
+            _productRepository.Add(product);
         }
 
         public void Delete(int id)
         {
-            Product product = products.FirstOrDefault(p => p.Id == id);
-            if (product != null)
-            {
-                products.Remove(product);
-            }
+            throw new NotImplementedException();
+        }
+
+        public List<Product> GetAll()
+        {
+            return _productRepository.GetAll();
         }
 
         public Product GetById(int id)
         {
-            return products.FirstOrDefault(p => p.Id == id);
+            throw new NotImplementedException();
         }
 
-        public void Update(Product updatedProduct)
+        public void Update(Product product)
         {
-            Product product = products.FirstOrDefault(p => p.Id == updatedProduct.Id);
-            if (product != null)
-            {
-                product.Name = updatedProduct.Name;
-                product.UnitPrice = updatedProduct.UnitPrice;
-            }
+            throw new NotImplementedException();
         }
+
+        //public void Delete(int id)
+        //{
+        //    Product product = products.FirstOrDefault(p => p.Id == id);
+        //    if (product != null)
+        //    {
+        //        products.Remove(product);
+        //    }
+        //}
+
+        //public Product GetById(int id)
+        //{
+        //    return products.FirstOrDefault(p => p.Id == id);
+        //}
+
+        //public void Update(Product updatedProduct)
+        //{
+        //    Product product = products.FirstOrDefault(p => p.Id == updatedProduct.Id);
+        //    if (product != null)
+        //    {
+        //        product.Name = updatedProduct.Name;
+        //        product.UnitPrice = updatedProduct.UnitPrice;
+        //    }
+        //}
     }
 }

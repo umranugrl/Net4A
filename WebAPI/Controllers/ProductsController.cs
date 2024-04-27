@@ -11,28 +11,28 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        IProductService productService;
+        IProductService _productService;
 
         public ProductsController(IProductService productService)
         {
-            this.productService = productService;
+            this._productService = productService;
         }
 
         [HttpGet]
         public List<Product> GetAll()
         {
-            return productService.GetAll();
+            return _productService.GetAll();
         }
 
         [HttpPost]
         public void Add([FromBody] Product product)
         {
-            productService.Add(product);
+            _productService.Add(product);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var product = productService.GetById(id);
+            var product = _productService.GetById(id);
             if (product == null)
             {
                 return NotFound();
@@ -47,14 +47,14 @@ namespace WebAPI.Controllers
             {
                 return BadRequest();
             }
-            productService.Update(product);
+            _productService.Update(product);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            productService.Delete(id);
+            _productService.Delete(id);
             return NoContent();
         }
     }

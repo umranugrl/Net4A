@@ -1,4 +1,5 @@
 ﻿using Business.Abstracts;
+using DataAccess.Abstracts;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -10,45 +11,60 @@ namespace Business.Concretes
 {
     public class CategoryManager : ICategoryService
     {
-        List<Category> categories;
+        ICategoryRepository _categoryRepository;
 
-        public CategoryManager()
+        public CategoryManager(ICategoryRepository categoryRepository)
         {
-            this.categories = new List<Category>();
+            _categoryRepository = categoryRepository;
         }
 
         public void Add(Category category)
         {
-            categories.Add(category);
-        }
-
-        public List<Category> GetAll()
-        {
-            return this.categories;
+            _categoryRepository.Add(category);
         }
 
         public void Delete(int id)
         {
-            Category category = categories.FirstOrDefault(c => c.CategoryId == id);
-            if (category != null)
-            {
-                categories.Remove(category);
-            }
+            throw new NotImplementedException();
+        }
+
+        public List<Category> GetAll()
+        {
+            return _categoryRepository.GetAll();
         }
 
         public Category GetById(int id)
         {
-            return categories.FirstOrDefault(c => c.CategoryId == id);
+            throw new NotImplementedException();
         }
 
-        public void Update(Category updatedCategory)
+        public void Update(Category category)
         {
-            Category category = categories.FirstOrDefault(c => c.CategoryId == updatedCategory.CategoryId);
-            if (category != null)
-            {
-                category.CategoryName = updatedCategory.CategoryName;
-            }
+            throw new NotImplementedException();
         }
+
+        //public void Delete(int id)
+        //{
+        //    Category category = categories.FirstOrDefault(c => c.CategoryId == id);
+        //    if (category != null)
+        //    {
+        //        categories.Remove(category);
+        //    }
+        //}
+
+        //public Category GetById(int id)
+        //{
+        //    return categories.FirstOrDefault(c => c.CategoryId == id);
+        //}
+
+        //public void Update(Category updatedCategory)
+        //{
+        //    Category category = categories.FirstOrDefault(c => c.CategoryId == updatedCategory.CategoryId);
+        //    if (category != null)
+        //    {
+        //        category.CategoryName = updatedCategory.CategoryName;
+        //    }
+        //}
 
     }
 }
