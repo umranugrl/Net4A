@@ -45,7 +45,7 @@ namespace Business.Concretes
 
         //public void Delete(int id)
         //{
-        //    Category category = categories.FirstOrDefault(c => c.CategoryId == id);
+        //    Category category = categories.FirstOrDefault(c => c.Id == id);
         //    if (category != null)
         //    {
         //        categories.Remove(category);
@@ -54,17 +54,16 @@ namespace Business.Concretes
 
         //public Category GetById(int id)
         //{
-        //    return categories.FirstOrDefault(c => c.CategoryId == id);
+        //    return categories.FirstOrDefault(c => c.Id == id);
         //}
 
         //public void Update(Category updatedCategory)
         //{
-        //    Category category = categories.FirstOrDefault(c => c.CategoryId == updatedCategory.CategoryId);
+        //    Category category = categories.FirstOrDefault(c => c.Id == updatedCategory.Id);
         //    if (category != null)
         //    {
         //        category.CategoryName = updatedCategory.CategoryName;
         //    }
         //}
-
     }
 }

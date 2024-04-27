@@ -29,7 +29,7 @@ namespace DataAccess.Concretes.InMemory
 
         public Category GetById(int id)
         {
-            Category? category = categories.FirstOrDefault(c => c.CategoryId == id);
+            Category? category = categories.FirstOrDefault(c => c.Id == id);
             return category;
         }
 

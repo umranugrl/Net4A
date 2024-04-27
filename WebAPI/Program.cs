@@ -16,10 +16,10 @@ builder.Services.AddSwaggerGen();
 //Scoped => (API isteði)Ýstek baþýna bir instance oluþturur.
 //Transient => Her adýmda (her talepte) yeni bir instance.
 
-builder.Services.AddSingleton<IProductService, ProductManager>();
-builder.Services.AddSingleton<IProductRepository, EfProductRepository>();
-builder.Services.AddSingleton<ICategoryService, CategoryManager>();
-builder.Services.AddSingleton<ICategoryRepository, EfCategoryRepository>();
+builder.Services.AddScoped<IProductService, ProductManager>();
+builder.Services.AddScoped<IProductRepository, EfProductRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
+builder.Services.AddScoped<ICategoryRepository, EfCategoryRepository>();
 
 builder.Services.AddDbContext<BaseDbContext>();
 

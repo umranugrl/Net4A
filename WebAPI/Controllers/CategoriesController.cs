@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] Category category)
         {
-            if (id != category.CategoryId)
+            if (id != category.Id)
             {
                 return BadRequest();
             }
