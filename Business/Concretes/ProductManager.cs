@@ -18,18 +18,18 @@ namespace Business.Concretes
             _productRepository = productRepository;
         }
 
-        public void Add(Product product)
+        public async void Add(Product product)
         {
             //Ürün fiyatı 0 dan küçük olamaz.
             if(product.UnitPrice <0)
                 throw new Exception("Ürün fiyatı 0'dan küçük olamaz.");
 
             //Aynı isimde 2. ürün eklenemez.
-            Product? productWithSameName = _productRepository.Get(p=>p.Name ==product.Name);
+            Product? productWithSameName = await _productRepository.GetAsync(p=>p.Name ==product.Name);
             if (productWithSameName is not null)
                 throw new Exception("Aynı isimde 2. ürün eklenemez.");
 
-            _productRepository.Add(product);
+            await _productRepository.AddAsync(product);
         }
 
         public void Delete(int id)

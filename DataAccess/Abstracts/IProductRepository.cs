@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DataAccess.Abstracts
 {
     //Ürün veri deposunun interface hali
-    public interface IProductRepository : IRepository<Product>
+    public interface IProductRepository : IRepository<Product>, IAsyncRepository<Product>
     {
 
     }
