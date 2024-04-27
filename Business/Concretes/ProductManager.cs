@@ -20,19 +20,27 @@ namespace Business.Concretes
 
         public void Add(Product product)
         {
+            //Ürün fiyatı 0 dan küçük olamaz.
             if(product.UnitPrice <0)
                 throw new Exception("Ürün fiyatı 0'dan küçük olamaz.");
+
+            //Aynı isimde 2. ürün eklenemez.
+            Product? productWithSameName = _productRepository.Get(p=>p.Name ==product.Name);
+            if (productWithSameName is not null)
+                throw new Exception("Aynı isimde 2. ürün eklenemez.");
+
             _productRepository.Add(product);
         }
 
         public void Delete(int id)
         {
+            Product? productToDelete = _productRepository.Get(i=>i.Id == id);
             throw new NotImplementedException();
         }
 
         public List<Product> GetAll()
         {
-            return _productRepository.GetAll();
+            return _productRepository.GetList();
         }
 
         public Product GetById(int id)

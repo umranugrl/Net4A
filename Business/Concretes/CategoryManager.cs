@@ -1,5 +1,6 @@
 ﻿using Business.Abstracts;
 using DataAccess.Abstracts;
+using DataAccess.Concretes.EntityFramework;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,13 @@ namespace Business.Concretes
 
         public void Delete(int id)
         {
+            Category? categoryToDelete = _categoryRepository.Get(i => i.Id == id);
             throw new NotImplementedException();
         }
 
         public List<Category> GetAll()
         {
-            return _categoryRepository.GetAll();
+            return _categoryRepository.GetList();
         }
 
         public Category GetById(int id)
