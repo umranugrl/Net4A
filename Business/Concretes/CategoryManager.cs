@@ -1,27 +1,33 @@
-﻿using Business.Abstracts;
+﻿using AutoMapper;
+using Business.Abstracts;
+using Business.Dtos.Category;
 using DataAccess.Abstracts;
-using DataAccess.Concretes.EntityFramework;
 using Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concretes
 {
     public class CategoryManager : ICategoryService
     {
         ICategoryRepository _categoryRepository;
+        IMapper _mapper;
 
-        public CategoryManager(ICategoryRepository categoryRepository)
+        public CategoryManager(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
-        public void Add(Category category)
+        public async Task Add(CategoryForAddDto dto)
         {
-            _categoryRepository.Add(category);
+            //Manual mapping
+            //Category category = new();
+            //category.CategoryName = dto.CategoryName;
+            //category.CreatedDate = DateTime.Now;
+
+            //Auto mapping
+            Category category = _mapper.Map<Category>(dto);
+
+            await _categoryRepository.AddAsync(category);
         }
 
         public void Delete(int id)
@@ -30,9 +36,17 @@ namespace Business.Concretes
             throw new NotImplementedException();
         }
 
-        public List<Category> GetAll()
+        public async Task<List<CategoryForListingDto>> GetAll()
         {
-            return _categoryRepository.GetList();
+            List<Category> categories = await _categoryRepository.GetListAsync();
+
+            List<CategoryForListingDto> response = categories.Select(c => new CategoryForListingDto()
+            {
+                Id = c.Id,
+                CategoryName = c.CategoryName,
+            }).ToList();
+
+            return response;
         }
 
         public Category GetById(int id)
@@ -44,15 +58,6 @@ namespace Business.Concretes
         {
             throw new NotImplementedException();
         }
-
-        //public void Delete(int id)
-        //{
-        //    Category category = categories.FirstOrDefault(c => c.Id == id);
-        //    if (category != null)
-        //    {
-        //        categories.Remove(category);
-        //    }
-        //}
 
         //public Category GetById(int id)
         //{

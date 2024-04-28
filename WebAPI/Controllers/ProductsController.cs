@@ -1,5 +1,6 @@
 ﻿using Business.Abstracts;
 using Business.Concretes;
+using Business.Dtos.Product;
 using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,15 +20,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Product>> GetAll()
+        public async Task<List<ProductForListingDto>> GetAll()
         {
             return await _productService.GetAll();
         }
 
         [HttpPost]
-        public void Add([FromBody] Product product)
+        public async Task Add([FromBody] ProductForAddDto product)
         {
-            _productService.Add(product);
+            await _productService.Add(product);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)

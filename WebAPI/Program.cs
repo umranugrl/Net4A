@@ -1,9 +1,6 @@
-using Business.Abstracts;
-using Business.Concretes;
-using Core.CrossCuttingConcerns.Exceptions;
-using DataAccess.Abstracts;
-using DataAccess.Concretes.EntityFramework;
 using Core.CrossCuttingConcerns.Exceptions.Extensions;
+using Business;
+using DataAccess;
 //using DataAccess.Concretes.InMemory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,12 +15,8 @@ builder.Services.AddSwaggerGen();
 //Scoped => (API isteði)Ýstek baþýna bir instance oluþturur.
 //Transient => Her adýmda (her talepte) yeni bir instance.
 
-builder.Services.AddScoped<IProductService, ProductManager>();
-builder.Services.AddScoped<IProductRepository, EfProductRepository>();
-builder.Services.AddScoped<ICategoryService, CategoryManager>();
-builder.Services.AddScoped<ICategoryRepository, EfCategoryRepository>();
-
-builder.Services.AddDbContext<BaseDbContext>();
+builder.Services.AddBusinessServices();
+builder.Services.AddDataAccessServices();
 
 var app = builder.Build();
 

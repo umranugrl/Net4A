@@ -1,4 +1,5 @@
 ﻿using Business.Abstracts;
+using Business.Dtos.Category;
 using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public List<Category> GetAll()
+        public async Task<List<CategoryForListingDto>> GetAll()
         {
-            return categoryService.GetAll();
+            return await categoryService.GetAll();
         }
 
         [HttpPost]
-        public void Add([FromBody] Category category)
+        public void Add([FromBody] CategoryForAddDto category)
         {
             categoryService.Add(category);
         }
