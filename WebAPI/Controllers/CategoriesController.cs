@@ -1,8 +1,6 @@
-﻿using Business.Abstracts;
-using Business.Dtos.Category.Request;
-using Business.Dtos.Category.Responce;
+﻿using Business.Features.Categories.Commands.Create;
 using Entities;
-using Microsoft.AspNetCore.Http;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,52 +9,41 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        ICategoryService categoryService;
+        private readonly IMediator _mediator;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(IMediator mediator)
         {
-            this.categoryService = categoryService;
+            this._mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<List<ListCategoryResponce>> GetAll()
-        {
-            return await categoryService.GetAll();
-        }
+        //[HttpGet]
+        //public async Task<List<ListCategoryResponce>> GetAll()
+        //{
+        //    return null;
+        //}
 
         [HttpPost]
-        public void Add([FromBody] AddCategoryRequest category)
-        {
-            categoryService.Add(category);
+        public async Task AddAsync([FromBody] CreateCategoryCommand command)
+        { 
+            await _mediator.Send(command);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var category = categoryService.GetById(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return Ok(category);
+            return null;
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] Category category)
         {
-            if (id != category.Id)
-            {
-                return BadRequest();
-            }
-            categoryService.Update(category);
-            return NoContent();
+            return null;
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            categoryService.Delete(id);
-            return NoContent();
+            return null;
         }
     }
 }

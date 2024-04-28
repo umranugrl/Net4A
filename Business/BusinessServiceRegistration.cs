@@ -9,10 +9,12 @@ namespace Business
     {
         public static IServiceCollection AddBusinessServices(this IServiceCollection services)
         {
+            services.AddMediatR(config => {
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                });
             services.AddScoped<IProductService, ProductManager>();//business
             services.AddScoped<ICategoryService, CategoryManager>();//business
             services.AddAutoMapper(Assembly.GetExecutingAssembly());//business
-
             return services;
         }
     }

@@ -1,9 +1,9 @@
-﻿using Business.Abstracts;
-using Business.Concretes;
-using Business.Dtos.Product.Request;
-using Business.Dtos.Product.Response;
-using Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Business.Features.Products.Commands.Create;
+using Business.Features.Products.Commands.Delete;
+using Business.Features.Products.Commands.Update;
+using Business.Features.Products.Queries.GetById;
+using Business.Features.Products.Queries.GetList;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -13,51 +13,48 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        IProductService _productService;
+        private readonly IMediator _mediator;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IMediator mediator)
         {
-            this._productService = productService;
-        }
-
-        [HttpGet]
-        public async Task<List<ListProductResponce>> GetAll()
-        {
-            return await _productService.GetAll();
+            this._mediator = mediator;
         }
 
         [HttpPost]
-        public async Task Add([FromBody] AddProductRequest product)
+        public async Task<IActionResult> Add([FromBody] CreateProductCommand command)
         {
-            await _productService.Add(product);
-        }
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var product = _productService.GetById(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return Ok(product);
+            await _mediator.Send(command);
+            return Created();
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Product product)
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetListProductQuery query)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-            _productService.Update(product);
-            return NoContent();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            GetByIdProductQuery query = new() { Id = id };
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            _productService.Delete(id);
-            return NoContent();
+            DeleteProductCommand command = new() { Id = id };
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateProductCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
     }
 }

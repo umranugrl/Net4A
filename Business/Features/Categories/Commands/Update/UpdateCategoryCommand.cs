@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Dtos.Category.Request
+namespace Business.Features.Categories.Commands.Update
 {
-    public class AddCategoryRequest
+    public class UpdateCategoryCommand
     {
-        public string CategoryName { get; set; }
+
     }
 }
