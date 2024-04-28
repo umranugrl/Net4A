@@ -1,7 +1,9 @@
 using Business.Abstracts;
 using Business.Concretes;
+using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstracts;
 using DataAccess.Concretes.EntityFramework;
+using Core.CrossCuttingConcerns.Exceptions.Extensions;
 //using DataAccess.Concretes.InMemory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureExceptionMiddlewareExtensions();
 
 app.UseHttpsRedirection();
 
