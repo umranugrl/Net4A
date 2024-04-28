@@ -1,4 +1,5 @@
-﻿using Business.Dtos.Category;
+﻿using Business.Dtos.Category.Request;
+using Business.Dtos.Category.Responce;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace Business.Abstracts
     public interface ICategoryService
     {
         Category GetById(int id);
-        Task<List<CategoryForListingDto>> GetAll();
-        Task Add(CategoryForAddDto category);
+        Task<List<ListCategoryResponce>> GetAll();
+        Task Add(AddCategoryRequest category);
         void Update(Category category);
         void Delete(int id);
     }

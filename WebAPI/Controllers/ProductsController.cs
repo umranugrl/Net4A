@@ -1,6 +1,7 @@
 ﻿using Business.Abstracts;
 using Business.Concretes;
-using Business.Dtos.Product;
+using Business.Dtos.Product.Request;
+using Business.Dtos.Product.Response;
 using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +21,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ProductForListingDto>> GetAll()
+        public async Task<List<ListProductResponce>> GetAll()
         {
             return await _productService.GetAll();
         }
 
         [HttpPost]
-        public async Task Add([FromBody] ProductForAddDto product)
+        public async Task Add([FromBody] AddProductRequest product)
         {
             await _productService.Add(product);
         }

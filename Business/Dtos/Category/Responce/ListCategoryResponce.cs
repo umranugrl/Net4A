@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Dtos.Category
+namespace Business.Dtos.Category.Responce
 {
-    public class CategoryForAddDto
+    public class ListCategoryResponce
     {
+        public int Id { get; set; }
         public string CategoryName { get; set; }
     }
 }

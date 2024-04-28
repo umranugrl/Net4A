@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Dtos.Category
+namespace Business.Dtos.Category.Request
 {
-    public class CategoryForListingDto
+    public class AddCategoryRequest
     {
-        public int Id { get; set; }
         public string CategoryName { get; set; }
     }
 }

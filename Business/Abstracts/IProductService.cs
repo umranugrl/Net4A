@@ -1,4 +1,5 @@
-﻿using Business.Dtos.Product;
+﻿using Business.Dtos.Product.Request;
+using Business.Dtos.Product.Response;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace Business.Abstracts
     public interface IProductService
     {
         Product GetById(int id);
-        Task<List<ProductForListingDto>> GetAll();
-        Task Add(ProductForAddDto product);
+        Task<List<ListProductResponce>> GetAll();
+        Task Add(AddProductRequest product);
         void Update(Product product);
         void Delete(int id);
     }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Business.Dtos.Category;
+using Business.Dtos.Category.Request;
+using Business.Dtos.Category.Responce;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace Business.MappingProfiles
     {
         public CategoryMappingProfiles() 
         {
-            CreateMap<Category, CategoryForAddDto>().ReverseMap();
+            CreateMap<Category, AddCategoryRequest>().ReverseMap();
+            CreateMap<Category, ListCategoryResponce>().ReverseMap();
         }
     }
 }

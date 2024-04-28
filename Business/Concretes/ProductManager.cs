@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
-using Business.Dtos.Product;
+using Business.Dtos.Product.Request;
+using Business.Dtos.Product.Response;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using DataAccess.Abstracts;
 using Entities;
@@ -9,8 +10,8 @@ namespace Business.Concretes
 {
     public class ProductManager : IProductService
     {
-        IProductRepository _productRepository;
-        IMapper _mapper;
+        private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
         public ProductManager(IProductRepository productRepository, IMapper mapper)
         {
@@ -18,7 +19,7 @@ namespace Business.Concretes
             _mapper = mapper;
         }
 
-        public async Task Add(ProductForAddDto dto)
+        public async Task Add(AddProductRequest dto)
         {
             //Ürün fiyatı 0 dan küçük olamaz.
             if(dto.UnitPrice <0)
@@ -49,7 +50,7 @@ namespace Business.Concretes
             throw new NotImplementedException();
         }
 
-        public async Task<List<ProductForListingDto>> GetAll()
+        public async Task<List<ListProductResponce>> GetAll()
         {
             List<Product> products = await _productRepository.GetListAsync();
 
@@ -64,13 +65,14 @@ namespace Business.Concretes
             //}
 
             //Manual Mapping
-            List<ProductForListingDto> response = products.Select(p => new ProductForListingDto()
-            {
-                Id=p.Id,
-                Name=p.Name,
-                UnitPrice=p.UnitPrice,
-            }).ToList();
+            //List<ProductForListingDto> response = products.Select(p => new ProductForListingDto()
+            //{
+            //    Id=p.Id,
+            //    Name=p.Name,
+            //    UnitPrice=p.UnitPrice,
+            //}).ToList();
 
+            List<ListProductResponce> response = _mapper.Map<List<ListProductResponce>>(products);
             return response;
         }
 

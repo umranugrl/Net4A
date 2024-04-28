@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
-using Business.Dtos.Category;
+using Business.Dtos.Category.Request;
+using Business.Dtos.Category.Responce;
+using Business.Dtos.Product;
 using DataAccess.Abstracts;
 using Entities;
 
@@ -8,8 +10,8 @@ namespace Business.Concretes
 {
     public class CategoryManager : ICategoryService
     {
-        ICategoryRepository _categoryRepository;
-        IMapper _mapper;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
         public CategoryManager(ICategoryRepository categoryRepository, IMapper mapper)
         {
@@ -17,7 +19,7 @@ namespace Business.Concretes
             _mapper = mapper;
         }
 
-        public async Task Add(CategoryForAddDto dto)
+        public async Task Add(AddCategoryRequest dto)
         {
             //Manual mapping
             //Category category = new();
@@ -36,16 +38,19 @@ namespace Business.Concretes
             throw new NotImplementedException();
         }
 
-        public async Task<List<CategoryForListingDto>> GetAll()
+        public async Task<List<ListCategoryResponce>> GetAll()
         {
             List<Category> categories = await _categoryRepository.GetListAsync();
 
-            List<CategoryForListingDto> response = categories.Select(c => new CategoryForListingDto()
-            {
-                Id = c.Id,
-                CategoryName = c.CategoryName,
-            }).ToList();
+            //Manual Mapping
+            //List<CategoryForListingDto> response = categories.Select(c => new CategoryForListingDto()
+            //{
+            //    Id = c.Id,
+            //    CategoryName = c.CategoryName,
+            //}).ToList();
 
+            //Auto Mapping
+            List<ListCategoryResponce> response = _mapper.Map<List<ListCategoryResponce>>(categories);
             return response;
         }
 
