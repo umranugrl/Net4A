@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using DataAccess.Abstracts;
 using Entities;
@@ -10,14 +11,14 @@ using ValidationException = Core.CrossCuttingConcerns.Exceptions.Types.Validatio
 
 namespace Business.Features.Products.Commands.Create
 {
-    public class CreateProductCommand : IRequest
+    public class CreateProductCommand : IRequest<CreateProductResponse>, ILoggableRequest
     {
         public string Name { get; set; }
         public double UnitPrice { get; set; }
         public int Stock { get; set; }
         public int CategoryId { get; set; }
 
-        public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand>
+        public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, CreateProductResponse>
         {
             private readonly IProductRepository _productRepository;
             private readonly ICategoryService _categoryService;
@@ -30,22 +31,20 @@ namespace Business.Features.Products.Commands.Create
                 _mapper = mapper;
             }
 
-            public async Task Handle(CreateProductCommand request, CancellationToken cancellationToken)
+            public async Task<CreateProductResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
             {
                 //Ürün fiyatı 0 dan küçük olamaz. //validasyon
                 //if (request.UnitPrice < 0)
                 //    throw new BusinessException("Ürün fiyatı 0'dan küçük olamaz.");
 
-                IValidator<CreateProductCommand> validator = new CreateProductCommandValidator();
-
-                // validator.ValidateAndThrow(request); // kendi ex. fırlatacak.
-
-                ValidationResult result = validator.Validate(request); // Validation'ı yapıcak. Sonucu vericek.
-
-                if (!result.IsValid)
-                {
-                    throw new ValidationException(result.Errors.Select(i => i.ErrorMessage).ToList());
-                }
+                /////////Validator entegraysonu olduğu için bu kod bloğuna ihtiyaç kalmadı
+                //IValidator<CreateProductCommand> validator = new CreateProductCommandValidator();
+                //// validator.ValidateAndThrow(request); // kendi ex. fırlatacak.
+                //ValidationResult result = validator.Validate(request); // Validation'ı yapıcak. Sonucu vericek.
+                //if (!result.IsValid)
+                //{
+                //    throw new ValidationException(result.Errors.Select(i => i.ErrorMessage).ToList());
+                //}
 
                 //Aynı isimde 2. ürün eklenemez. //iş kuralı
                 Product? productWithSameName = await _productRepository.GetAsync(p => p.Name == request.Name);
@@ -69,8 +68,8 @@ namespace Business.Features.Products.Commands.Create
                 Product product = _mapper.Map<Product>(request);
                 await _productRepository.AddAsync(product);
 
-                //CreateProductResponse response = _mapper.Map<CreateProductResponse>(product);
-                //return response;
+                CreateProductResponse response = _mapper.Map<CreateProductResponse>(product);
+                return response;
             }
         }
     }

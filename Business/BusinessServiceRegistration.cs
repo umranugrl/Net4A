@@ -1,5 +1,8 @@
 ﻿using Business.Abstracts;
 using Business.Concretes;
+using Core.Application.Pipelines.Logging;
+using Core.Application.Pipelines.Validation;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,12 +13,16 @@ namespace Business
         public static IServiceCollection AddBusinessServices(this IServiceCollection services)
         {
             services.AddMediatR(config => {
-            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                });
-            services.AddScoped<IProductService, ProductManager>();//business
-            services.AddScoped<ICategoryService, CategoryManager>();//business
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());//business
+                config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                // Sıralama!
+                config.AddOpenBehavior(typeof(LoggingBehavior<,>));
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            });
+            services.AddScoped<IProductService, ProductManager>();
+            services.AddScoped<ICategoryService, CategoryManager>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             return services;
         }
-    }
+    } 
 }
