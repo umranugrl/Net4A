@@ -1,12 +1,7 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Core.CrossCuttingConcerns.Exceptions
 {
@@ -38,9 +33,18 @@ namespace Core.CrossCuttingConcerns.Exceptions
                     problemDetails.Type = "BusinessException";
                     await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
                 }
+                else if (exception is ValidationException)
+                {
+                    // Casting
+                    ValidationException validationException = (ValidationException)exception;
+                    ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails(validationException.Errors.ToList());
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(validationProblemDetails));
+                }
                 else
                 {
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    await context.Response.WriteAsync("Bilinmedik Hata");
                 }
             }
         }

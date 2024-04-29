@@ -16,6 +16,7 @@ namespace Business.Features.Products.Profiles
             CreateMap<Product, GetByIdProductResponse>().ReverseMap();
             CreateMap<Product, UpdateProductResponse>().ReverseMap();
             CreateMap<Product, UpdateProductCommand>().ReverseMap();
+            CreateMap<Product, CreateProductResponse>().ReverseMap();
         }
     }
 }
