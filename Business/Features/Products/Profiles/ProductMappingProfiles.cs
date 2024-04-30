@@ -17,6 +17,7 @@ namespace Business.Features.Products.Profiles
             CreateMap<Product, UpdateProductResponse>().ReverseMap();
             CreateMap<Product, UpdateProductCommand>().ReverseMap();
             CreateMap<Product, CreateProductResponse>().ReverseMap();
+            //.ForMember(i=>i.UnitPrice, opt => opt.MapFrom(dto => dto.Price));
         }
     }
 }

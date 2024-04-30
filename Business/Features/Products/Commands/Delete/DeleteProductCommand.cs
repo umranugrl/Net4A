@@ -2,15 +2,17 @@
 using DataAccess.Abstracts;
 using Entities;
 using MediatR;
+
 namespace Business.Features.Products.Commands.Delete
 {
     public class DeleteProductCommand : IRequest
     {
         public int Id { get; set; }
+
         public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
         {
             private IProductRepository _productRepository;
-          
+
             public DeleteProductCommandHandler(IProductRepository productRepository)
             {
                 _productRepository = productRepository;

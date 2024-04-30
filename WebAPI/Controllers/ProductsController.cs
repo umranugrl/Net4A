@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
 
         public ProductsController(IMediator mediator)
         {
-            this._mediator = mediator;
+            _mediator = mediator;
         }
 
         [HttpPost]

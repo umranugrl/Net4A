@@ -1,5 +1,8 @@
 ﻿using Business.Features.Categories.Commands.Create;
-using Entities;
+using Business.Features.Categories.Commands.Delete;
+using Business.Features.Categories.Commands.Update;
+using Business.Features.Categories.Queries.GetById;
+using Business.Features.Categories.Queries.GetList;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,37 +16,44 @@ namespace WebAPI.Controllers
 
         public CategoriesController(IMediator mediator)
         {
-            this._mediator = mediator;
+            _mediator = mediator;
         }
 
-        //[HttpGet]
-        //public async Task<List<ListCategoryResponce>> GetAll()
-        //{
-        //    return null;
-        //}
-
         [HttpPost]
-        public async Task AddAsync([FromBody] CreateCategoryCommand command)
-        { 
+        public async Task<IActionResult> Add([FromBody] CreateCategoryCommand command)
+        {
             await _mediator.Send(command);
+            return Created();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetListCategoryQuery query)
+        {
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            return null;
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Category category)
-        {
-            return null;
+            GetByIdCategoryQuery query = new() { Id = id };
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            return null;
+            DeleteCategoryCommand command = new() { Id = id };
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
     }
 }

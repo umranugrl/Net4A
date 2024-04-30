@@ -4,7 +4,7 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using DataAccess.Abstracts;
 using Entities;
 using MediatR;
- 
+
 namespace Business.Features.Products.Commands.Update
 {
     public class UpdateProductCommand : IRequest<UpdateProductResponse>
@@ -35,6 +35,7 @@ namespace Business.Features.Products.Commands.Update
                     throw new BusinessException("Böyle bir kategori bulunamadı.");
 
                 Product? product = await _productRepository.GetAsync(p => p.Id == request.Id);
+
                 if (product is null)
                     throw new BusinessException("Böyle bir veri bulunamadı.");
 

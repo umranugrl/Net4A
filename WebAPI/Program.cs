@@ -1,6 +1,7 @@
 using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Business;
 using DataAccess;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 //using DataAccess.Concretes.InMemory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddBusinessServices();
 builder.Services.AddDataAccessServices();
 
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        // JWT Konfigürasyonlarý..
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+        {
+            // IssuerSigningKey = ""
+        };
+    });
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +43,8 @@ if (app.Environment.IsDevelopment())
 app.ConfigureExceptionMiddlewareExtensions();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

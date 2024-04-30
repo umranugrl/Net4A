@@ -4,14 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DataAccess
 {
-    public static class DataAccessserviceRegistration
+    public static class DataAccessServiceRegistration
     {
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services)
         {
-            services.AddScoped<IProductRepository, EfProductRepository>();//dataaccess
-            services.AddScoped<ICategoryRepository, EfCategoryRepository>();//dataaccess
-            services.AddDbContext<BaseDbContext>();//dataaccess
-
+            services.AddScoped<IProductRepository, EfProductRepository>();
+            services.AddScoped<ICategoryRepository, EfCategoryRepository>();
+            services.AddScoped<IUserRepository, EfUserRepository>();
+            services.AddDbContext<BaseDbContext>();
             return services;
         }
     }

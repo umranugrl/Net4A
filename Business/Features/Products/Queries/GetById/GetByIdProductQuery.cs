@@ -23,7 +23,7 @@ namespace Business.Features.Products.Queries.GetById
 
             public async Task<GetByIdProductResponse> Handle(GetByIdProductQuery request, CancellationToken cancellationToken)
             {
-                Product? product = await _productRepository.GetAsync(i => i.Id == request.Id);
+                Product? product = await _productRepository.GetAsync(p => p.Id == request.Id);
 
                 if (product is null)
                     throw new BusinessException("Böyle bir veri bulunamadı.");
