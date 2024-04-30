@@ -1,7 +1,10 @@
-using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Business;
+using Core;
+using Core.CrossCuttingConcerns.Exceptions.Extensions;
+using Core.Utilities.Encryption;
 using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using TokenOptions = Core.Utilities.JWT.TokenOptions;
 //using DataAccess.Concretes.InMemory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,17 +19,26 @@ builder.Services.AddSwaggerGen();
 //Scoped => (API isteði)Ýstek baþýna bir instance oluþturur.
 //Transient => Her adýmda (her talepte) yeni bir instance.
 
+TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddBusinessServices();
 builder.Services.AddDataAccessServices();
+builder.Services.AddCoreServices(tokenOptions);
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // JWT Konfigürasyonlarý..
         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
         {
-            // IssuerSigningKey = ""
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = tokenOptions.Issuer,
+            ValidAudience = tokenOptions.Audience,
+            IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
         };
     });
 

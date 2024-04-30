@@ -3,6 +3,8 @@ using Core.Utilities.Hashing;
 using DataAccess.Abstracts;
 using Entities;
 using MediatR;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Business.Features.Auth.Commands.Register
 {
