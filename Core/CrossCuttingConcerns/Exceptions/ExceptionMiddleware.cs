@@ -8,23 +8,20 @@ namespace Core.CrossCuttingConcerns.Exceptions
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
         }
-
-        public async Task Invoke(HttpContext context) 
+        public async Task Invoke(HttpContext context)
         {
             try
             {
-                await _next(context);
+                await _next(context); // herhangi bir işlem
             }
-            catch(Exception exception) 
+            catch (Exception exception)
             {
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-
                 if (exception is BusinessException)
                 {
                     ProblemDetails problemDetails = new ProblemDetails();
@@ -33,10 +30,10 @@ namespace Core.CrossCuttingConcerns.Exceptions
                     problemDetails.Type = "BusinessException";
                     await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
                 }
-                else if (exception is ValidationException)
+                else if (exception is ValidationException) // türü ValidationEx. ise
                 {
-                    // Casting
                     ValidationException validationException = (ValidationException)exception;
+
                     ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails(validationException.Errors.ToList());
 
                     await context.Response.WriteAsync(JsonSerializer.Serialize(validationProblemDetails));

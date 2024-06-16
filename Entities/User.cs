@@ -4,6 +4,5 @@ namespace Entities
 {
     public class User : BaseUser
     {
-
     }
 }

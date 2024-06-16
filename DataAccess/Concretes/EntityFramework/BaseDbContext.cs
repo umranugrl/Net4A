@@ -1,10 +1,7 @@
-﻿using Entities;
+﻿using Core.Entities;
+using Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DataAccess.Concretes.EntityFramework
 {
@@ -14,6 +11,8 @@ namespace DataAccess.Concretes.EntityFramework
         public DbSet<Product> Products {  get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,19 +25,16 @@ namespace DataAccess.Concretes.EntityFramework
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Product>().HasOne(i => i.Category);
             modelBuilder.Entity<Product>().Property(i => i.Name).HasColumnName("Name").HasMaxLength(50);
-            
-            //Seed Data
-            Category category = new Category(1,"Giyim");
-            Category category2 = new (2, "Elektronik");
-            Category category3 = new (3, "Mobilya");
+            modelBuilder.Entity<User>().ToTable("Users");
+            //modelBuilder.Entity<UserOperationClaim>()
 
-            Product product = new Product(1,"Kazak",500,50,1);
-            Product product2 = new (2, "Telefon", 50000, 50, 2);
-            Product product3 = new (3, "Masa", 1500, 20, 3);
+            // Seed Data
 
-            modelBuilder.Entity<Category>().HasData(category, category2,category3);
-            modelBuilder.Entity<Product>().HasData(product, product2, product3);
-
+            Category category = new Category(1, "Giyim");
+            Category category1 = new(2, "Elektronik");
+            Product product = new Product(1, "Kazak", 500, 50, 1);
+            modelBuilder.Entity<Category>().HasData(category, category1);
+            modelBuilder.Entity<Product>().HasData(product);
             base.OnModelCreating(modelBuilder);
         }
     }
