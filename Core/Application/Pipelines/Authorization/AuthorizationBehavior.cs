@@ -1,6 +1,8 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions.Types;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace Core.Application.Pipelines.Authorization
 {
@@ -16,8 +18,22 @@ namespace Core.Application.Pipelines.Authorization
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
+            //TODO: Implement Roles
             if (!_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                 throw new BusinessException("Giriş yapmadınız.");
+
+            if (request.RequiredRoles.Any())
+            {
+                ICollection<string>? userRoles = _httpContextAccessor.HttpContext.User.Claims
+                     .Where(i => i.Type == ClaimTypes.Role)
+                     .Select(i => i.Value)
+                     .ToList();
+
+                bool hasNoMatchingRole = userRoles.FirstOrDefault(i => i == "Admin" || request.RequiredRoles.Contains(i)).IsNullOrEmpty();
+
+                if (hasNoMatchingRole)
+                    throw new BusinessException("Bunu yapmaya yetkiniz yok.");
+            }
 
             TResponse response = await next();
             return response;

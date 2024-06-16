@@ -2,7 +2,7 @@
 
 namespace Entities
 {
-    public class User : BaseUser
+    public class OperationClaim : Core.Entities.OperationClaim
     {
         public virtual List<UserOperationClaim> UserOperationClaims { get; set; }
     }

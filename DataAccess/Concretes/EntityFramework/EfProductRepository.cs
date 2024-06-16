@@ -1,5 +1,6 @@
 ﻿using Core.DataAccess;
 using DataAccess.Abstracts;
+using Microsoft.EntityFrameworkCore;
 using Entities;
 
 namespace DataAccess.Concretes.EntityFramework
